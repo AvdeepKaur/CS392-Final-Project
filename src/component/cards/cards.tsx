@@ -5,6 +5,7 @@ import 'antd/dist/reset.css';
 
 // yazan
 
+
 // Sample data for study locations - Added more locations
 const studyLocations = [
     {
@@ -52,53 +53,66 @@ const studyLocations = [
 ];
 
 // Styled Components
+
+interface CardProps {
+    $selected: boolean;            // styled-components prop (note the $)
+}
+
+
 const CardsContainer = styled.div`
-  overflow: hidden;
+    overflow: hidden;
 
-  padding: clamp(10px, 2vw, 20px);
-  max-width: min(70vw, 1200px);
-  margin: 0 auto;
-  background-color: #f5e3dc;
-  border-radius: 12px;
-  max-height: 30vh;
-  min-height: 200px;
+    padding: clamp(10px, 2vw, 20px);
+    max-width: min(70vw, 1200px);
+    margin: 0 auto;
+    background-color: #8a8a8a;
+    border-radius: 12px;
+    max-height: 30vh;
+    min-height: 200px;
 
-  .ant-carousel {
-    /* override slick’s hidden overflow */
-    .slick-list,
-    .slick-track {
-      overflow: visible !important;
-    }
-    .slick-slide {
-      overflow: visible !important;
-    }
+    .ant-carousel {
+        /* override slick’s hidden overflow */
 
-    /* keep your existing carousel height/style overrides */
-    .ant-carousel-content {
-      height: 200px;
+        .slick-list,
+        .slick-track {
+            overflow: visible !important;
+        }
+
+        .slick-slide {
+            overflow: visible !important;
+        }
+
+        /* keep your existing carousel height/style overrides */
+
+        .ant-carousel-content {
+            height: 200px;
+        }
+
+        .slick-prev, .slick-next {
+            font-size: 20px;
+            color: #000;
+            z-index: 2;
+        }
+
+        .slick-prev {
+            left: 10px;
+            @media (max-width: 768px) {
+                left: 10px;
+            }
+        }
+
+        .slick-next {
+            right: 10px;
+            @media (max-width: 768px) {
+                right: 10px;
+            }
+        }
+
+        .slick-prev:before, .slick-next:before {
+            color: #000;
+            font-size: 20px;
+        }
     }
-    .slick-prev, .slick-next {
-      font-size: 20px;
-      color: #000;
-      z-index: 2;
-    }
-    .slick-prev {
-      left: 10px;
-      @media (max-width: 768px) {
-        left: 10px;
-      }
-    }
-    .slick-next {
-      right: 10px;
-      @media (max-width: 768px) {
-        right: 10px;
-      }
-    }
-    .slick-prev:before, .slick-next:before {
-      color: #000;
-      font-size: 20px;
-    }
-  }
 `;
 
 // Content wrapper
@@ -110,8 +124,8 @@ const CardContent = styled.div`
     min-width: 0; 
 `;
 
-const Card = styled.div`
-    background: white;
+const Card = styled.div<CardProps>`
+    background: ${({ $selected }) => ($selected ? '#f8dbdb' : 'white')};
     border-radius: 16px;
     padding: 16px;
     display: flex;
@@ -122,13 +136,16 @@ const Card = styled.div`
     flex: 1;
     flex-shrink: 0;
     min-width: 300px;
+
+    cursor: pointer;
     
     
 //    animation!!!!!!
 
     position: relative;                 /* lets us raise z-index on hover */
     transition: transform 0.25s ease,   /* smooth motion */
-    box-shadow 0.25s ease;
+        box-shadow 0.25s ease,
+        background 0.25s ease;   
 
     &:hover {
         transform: translate(12px, -12px) scale(1.04);
@@ -197,7 +214,11 @@ const SlideContainer = styled.div`
 `;
 
 // main Component
-const StudyCards: React.FC = () => {
+const StudyCards: React.FC<{ onCardClick?: (id: number) => void }> = ({
+                                                                          onCardClick,
+                                                                      }) => {
+    /* highlighted card ID */
+    const [activeId, setActiveId] = useState<number | null>(null);
     const settings = {
         dots: true,
         infinite: true,
@@ -242,7 +263,14 @@ const StudyCards: React.FC = () => {
                     <div key={groupIndex}>
                         <SlideContainer>
                             {locationGroup.map((location) => (
-                                <Card key={location.id}>
+                                <Card
+                                    key={location.id}
+                                    $selected={location.id === activeId}
+                                    onClick={() => {
+                                        setActiveId(location.id); // for highlight
+                                        onCardClick?.(location.id); // SEND OUT ID FOR BACK-END !!
+                                    }}
+                                >
                                     {/* Image placeholder */}
                                     <ImagePlaceholder />
 
