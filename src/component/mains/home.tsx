@@ -1,24 +1,73 @@
 import styled from 'styled-components';
+import { useState } from 'react';
+import Switch from '@mui/material/Switch';
+
+
+//import MapComponent from
 
 export default function Home(){
 
+    const [isListView, setIsListView] = useState(false);
 
     const StyledHome = styled.div`
         display: flex;
-        justify-content: center;
         flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
         margin: 5%;
-        background-color: lavenderblush;
+        gap: 2%;
+        background-color: lightblue;
+        padding: 10%;
+        font-family: nunito, sans-serif;
     `;
 
-    //const StyledCard = styled.div`
+    const MapWrapper = styled.div`
+        background-color: white;
+        border-radius: 16px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        padding: 10%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        flex-grow: 2;
+        flex-shrink: 1;
+        flex-basis: 0;
+    `;
 
-    //`;
+    const SwitchContainer = styled.div`
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    `;
+
+    const ViewLabel = styled.p`
+        font-size: 1.2rem;
+        font-weight: bold;
+        font-family: nunito, sans-serif;
+        margin-top: 1rem;
+    `;
+
     return(
         <>
             <title>Home | Terrier StudyMap</title>
             <StyledHome>
-                <h1>Home</h1>
+                <SwitchContainer>
+                    <span>Map View</span>
+                    <Switch
+                        checked={isListView}
+                        onChange={() => setIsListView(!isListView)}
+                        color="default"
+                    />
+                    <span>List View</span>
+                </SwitchContainer>
+
+                <ViewLabel>
+                    {isListView ? 'List of Study Spots' : 'Interactive Map'}
+                </ViewLabel>
+                <MapWrapper>
+                    {isListView ? 'List content placeholder'  : 'Map content placeholder' }
+                </MapWrapper>
             </StyledHome>
         </>
     )

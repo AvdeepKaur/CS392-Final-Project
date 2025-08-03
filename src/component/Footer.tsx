@@ -17,7 +17,7 @@ export default function Header(){
 
     return (
         <StyledFooter>
-            <FooterSubtitle>&copy; CS391 2025 Avdeep, Ruby, and Yazan. All rights reserved.</FooterSubtitle>
+            <FooterSubtitle>&copy; CS391 Summer 2025 Avdeep, Ruby, and Yazan. All rights reserved.</FooterSubtitle>
         </StyledFooter>
 
     )
