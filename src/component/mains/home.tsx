@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import Switch from '@mui/material/Switch';
+import ListComponent from '../ListComponent';
 
 
 //import MapComponent from
@@ -14,16 +15,14 @@ export default function Home(){
         flex-direction: column;
         justify-content: center;
         align-items: flex-start;
-        margin: 5%;
-        gap: 2%;
         background-color: lightblue;
-        padding: 10%;
+        padding: 5%;
         font-family: nunito, sans-serif;
     `;
 
     const MapWrapper = styled.div`
         background-color: white;
-        border-radius: 16px;
+        border-radius: 20px;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
         padding: 10%;
         width: 100%;
@@ -38,14 +37,13 @@ export default function Home(){
     const SwitchContainer = styled.div`
         display: flex;
         align-items: center;
-        gap: 0.5rem;
     `;
 
     const ViewLabel = styled.p`
-        font-size: 1.2rem;
+        font-size: 20px;
         font-weight: bold;
         font-family: nunito, sans-serif;
-        margin-top: 1rem;
+        margin-top: 2%;
     `;
 
     return(
@@ -66,7 +64,7 @@ export default function Home(){
                     {isListView ? 'List of Study Spots' : 'Interactive Map'}
                 </ViewLabel>
                 <MapWrapper>
-                    {isListView ? 'List content placeholder'  : 'Map content placeholder' }
+                    {isListView ? <ListComponent></ListComponent>  : 'Map content placeholder' }
                 </MapWrapper>
             </StyledHome>
         </>

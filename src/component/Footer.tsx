@@ -9,7 +9,7 @@ const StyledFooter = styled.footer`
 
 const FooterSubtitle = styled.p`
     text-align: center;
-    padding: 0 10%;
+    padding: 3%;
     font-family: nunito, sans-serif;
 `;
 
