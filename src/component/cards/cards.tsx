@@ -2,52 +2,51 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Carousel } from 'antd';
 import 'antd/dist/reset.css';
-
+import type { Location } from '../../interfaces/Location';
 // yazan
 
-
 // Sample data for study locations - Added more locations
-const studyLocations = [
+const studyLocations: Location[] = [
     {
-        id: 1,
+        _id: '1',
         name: 'GSU',
         address: '775 Commonwealth Ave, Boston, MA 02215',
-        image: '/api/placeholder/300/200',
+
         tags: ['Quiet', 'WiFi', '24/7', 'Food']
     },
     {
-        id: 2,
+        _id: '2',
         name: 'Mugar Library',
         address: '771 Commonwealth Ave, Boston, MA 02215',
-        image: '/api/placeholder/300/200',
+
         tags: ['Silent', 'Study Rooms', 'WiFi', 'Late Hours']
     },
     {
-        id: 3,
+        _id: '3',
         name: 'Photonics Center',
         address: '8 Saint Mary\'s St, Boston, MA 02215',
-        image: '/api/placeholder/300/200',
+
         tags: ['Modern', 'Collaborative', 'WiFi', 'Cafe']
     },
     {
-        id: 4,
+        _id: '4',
         name: 'CAS Library',
         address: '685 Commonwealth Ave, Boston, MA 02215',
-        image: '/api/placeholder/300/200',
+
         tags: ['Quiet', 'Research', 'WiFi', 'Books']
     },
     {
-        id: 5,
+        _id: '5',
         name: 'Starbucks BU',
         address: '704 Commonwealth Ave, Boston, MA 02215',
-        image: '/api/placeholder/300/200',
+
         tags: ['Coffee', 'Casual', 'WiFi', 'Social']
     },
     {
-        id: 6,
+        _id: '6',
         name: 'Warren Towers Study Lounge ADFBKJDSBFKJSDFBKJSDBF',
         address: '700 Commonwealth Ave, Boston, MA 02215',
-        image: '/api/placeholder/300/200',
+
         tags: ['Dorm', 'Group Study', 'WiFi', 'Late Night']
     }
 ];
@@ -61,15 +60,18 @@ interface CardProps {
 
 const CardsContainer = styled.div`
     overflow: hidden;
+    position: relative;
 
     padding: clamp(10px, 2vw, 20px);
     max-width: min(70vw, 1200px);
     margin: 0 auto;
-    background-color: #8a8a8a;
+    background-color: #CC0000
+;
     border-radius: 12px;
     max-height: 30vh;
     min-height: 200px;
-
+    
+    
     .ant-carousel {
         /* override slick’s hidden overflow */
 
@@ -95,21 +97,21 @@ const CardsContainer = styled.div`
         }
 
         .slick-prev {
-            left: 10px;
+            left: 25px;
             @media (max-width: 768px) {
-                left: 10px;
+                left: 25px;
             }
         }
 
         .slick-next {
-            right: 10px;
+            right: 25px;
             @media (max-width: 768px) {
-                right: 10px;
+                right: 25px;
             }
         }
 
         .slick-prev:before, .slick-next:before {
-            color: #000;
+            color: #2D2926;
             font-size: 20px;
         }
     }
@@ -125,7 +127,7 @@ const CardContent = styled.div`
 `;
 
 const Card = styled.div<CardProps>`
-    background: ${({ $selected }) => ($selected ? '#f8dbdb' : 'white')};
+    background: ${({$selected}) => ($selected ? '#fbe3e3' : 'white')};
     border-radius: 16px;
     padding: 16px;
     display: flex;
@@ -138,19 +140,18 @@ const Card = styled.div<CardProps>`
     min-width: 300px;
 
     cursor: pointer;
-    
-    
-//    animation!!!!!!
 
-    position: relative;                 /* lets us raise z-index on hover */
-    transition: transform 0.25s ease,   /* smooth motion */
-        box-shadow 0.25s ease,
-        background 0.25s ease;   
+
+    //    animation!!!!!!
+
+    position: relative; /* lets us raise z-index on hover */
+    transition: transform 0.25s ease, /* smooth motion */ box-shadow 0.25s ease,
+    background 0.25s ease;
 
     &:hover {
         transform: translate(12px, -12px) scale(1.04);
-        box-shadow: -12px 12px 0 0  #dd6f6f;
-        z-index: 100;                       /* sit on top of neighbouring cards */
+        box-shadow: -12px 12px 0 0 #e1a8a8;
+        z-index: 100; /* sit on top of neighbouring cards */
     }
 `;
 
@@ -173,7 +174,7 @@ const NameContainer = styled.div`
 const LocationName = styled.h3`
     font-size: calc(7px + .7vw);
     font-weight: bold;
-    color: #000;
+    color: #2D2926;
     margin: 0;
 
     /* text truncation, 1 line only */
@@ -197,7 +198,7 @@ const TagsContainer = styled.div`
 `;
 
 const Tag = styled.span`
-    background-color: #dd6f6f;
+    background-color: #cc0000;
     color: #ffffff;
     padding: 4px 6px;
     border-radius: 4px;
@@ -214,11 +215,11 @@ const SlideContainer = styled.div`
 `;
 
 // main Component
-const StudyCards: React.FC<{ onCardClick?: (id: number) => void }> = ({
+const StudyCards: React.FC<{ onCardClick?: (id: string) => void }> = ({
                                                                           onCardClick,
                                                                       }) => {
     /* highlighted card ID */
-    const [activeId, setActiveId] = useState<number | null>(null);
+    const [activeId, setActiveId] = useState<string | null>(null);
     const settings = {
         dots: true,
         infinite: true,
@@ -264,11 +265,11 @@ const StudyCards: React.FC<{ onCardClick?: (id: number) => void }> = ({
                         <SlideContainer>
                             {locationGroup.map((location) => (
                                 <Card
-                                    key={location.id}
-                                    $selected={location.id === activeId}
+                                    key={location._id}
+                                    $selected={location._id === activeId}
                                     onClick={() => {
-                                        setActiveId(location.id); // for highlight
-                                        onCardClick?.(location.id); // SEND OUT ID FOR BACK-END !!
+                                        setActiveId(location._id); // for highlight
+                                        onCardClick?.(location._id); // SEND OUT ID FOR BACK-END !!
                                     }}
                                 >
                                     {/* Image placeholder */}
