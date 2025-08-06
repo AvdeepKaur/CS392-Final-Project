@@ -8,16 +8,17 @@ import Map from "./components/map";
 //`;
 
 export default function App(){
-    return(
-        <>
-            <Header></Header>
-            <main>Hello pretend this is the main</main>
-            <Map />
+    return (
+      <>
+        <Header></Header>
+        <main>
+          Hello pretend this is the main
+          <Map />
+          {/*test out cards */}
+          <StudyCards />
+        </main>
 
-            {/*test out cards */}
-            <StudyCards />
-
-            <Footer></Footer>
-        </>
-    )
+        <Footer></Footer>
+      </>
+    );
 }
