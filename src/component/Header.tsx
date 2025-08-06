@@ -2,7 +2,7 @@ import styled from "styled-components";
 import '/src/global.css';
 
 const StyledHeader = styled.header`
-    margin: 3%;
+    margin: 3% 3% 1% 3%;
     display: flex;
     justify-content: center;
     flex-direction: column
