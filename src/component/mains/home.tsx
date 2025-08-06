@@ -2,9 +2,8 @@ import styled from "styled-components";
 import { useState } from "react";
 import Switch from "@mui/material/Switch";
 import ListComponent from "../ListComponent";
-import Map from "../components/map";
+import Map from "../map";
 
-//import MapComponent from
 
 export default function Home() {
   const [isListView, setIsListView] = useState(false);
