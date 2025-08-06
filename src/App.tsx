@@ -1,24 +1,26 @@
-import Header from './component/Header'
-import Footer from './component/Footer'
+import styled from 'styled-components';
+import Header from './component/Header';
+import Footer from './component/Footer';
 import StudyCards from "./component/cards/cards.tsx";
-import Map from "./components/map";
+import Home from './component/mains/home';
 
-//const StyledWrapper = styled.div`
+const StyledWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    height: 100vh
+`;
 
-//`;
 
 export default function App(){
-    return (
-      <>
-        <Header></Header>
-        <main>
-          Hello pretend this is the main
-          <Map />
-          {/*test out cards */}
-          <StudyCards />
-        </main>
 
-        <Footer></Footer>
-      </>
-    );
+    return(
+        <StyledWrapper>
+            <Header></Header>
+            <main>
+                <Home></Home>
+                <StudyCards />
+            </main>
+            <Footer></Footer>
+        </StyledWrapper>
+    )
 }
