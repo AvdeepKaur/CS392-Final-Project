@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { useState } from "react";
 import Switch from "@mui/material/Switch";
+import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import ListComponent from "../ListComponent";
 import Map from "../map";
 
@@ -44,6 +45,18 @@ export default function Home() {
     margin-top: 2%;
   `;
 
+  const HeartIcon = styled(FavoriteRoundedIcon)`
+    margin-top: 2%;
+    color: indianred;
+    padding-top: 5px;
+  `;
+
+  const FavoriteWrapper = styled.div`
+    display: flex;
+    align-items: center;       
+    margin: 1% 0;
+  `;
+
   const TitleWrapper = styled.div`
     display: flex;
     flex-direction: row;
@@ -77,7 +90,9 @@ export default function Home() {
           {isListView ? <ListComponent></ListComponent> : <Map />}
         </MapWrapper>
 
-        <ViewLabel>Favorite Spots</ViewLabel>
+        <FavoriteWrapper>
+          <ViewLabel>Favorite Spots <HeartIcon></HeartIcon></ViewLabel>
+        </FavoriteWrapper>
       </StyledHome>
     </>
   );

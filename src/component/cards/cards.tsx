@@ -63,9 +63,9 @@ const CardsContainer = styled.div`
     position: relative;
 
     padding: clamp(10px, 2vw, 20px);
-    max-width: min(70vw, 1200px);
+    max-width: 80vw;
     margin: 0 auto;
-    background-color: #CC0000
+    background-color: darkred;
 ;
     border-radius: 12px;
     max-height: 30vh;
