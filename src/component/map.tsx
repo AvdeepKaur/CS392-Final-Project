@@ -328,7 +328,7 @@ const Map = () => {
     const geocoder = new window.google.maps.Geocoder();
     let markersCreated = 0;
 
-    locations.forEach((location, index) => {
+    locations.forEach((location) => {
       geocoder.geocode(
         { address: location.address },
         (results: any, status: any) => {
