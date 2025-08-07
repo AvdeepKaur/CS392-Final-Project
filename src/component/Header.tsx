@@ -1,3 +1,5 @@
+//ruby
+
 import styled from "styled-components";
 import '/src/global.css';
 import type { ReactNode } from "react";
