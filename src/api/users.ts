@@ -14,10 +14,6 @@ export interface User {
   favoriteLocationIds: string[];
 }
 
-interface Params {
-  id: string;
-}
-
 // interface for the authenticated request containing userId
 interface AuthRequest extends Request {
   userId?: string;
