@@ -21,49 +21,62 @@ interface StudySpot {
     name: string;
     address: string;
     tags: string[];
+    floor?: string;
 }
-
-const mockStudySpots: StudySpot[] = [
-    {
-        _id: '1',
-        name: 'Mugar Memorial Library',
-        address: '771 Commonwealth Ave, Boston, MA 02215',
-        tags: ['quiet', 'library', 'group rooms']
-    },
-    {
-        _id: '2',
-        name: 'Caffè Nero',
-        address: '1047 Commonwealth Ave, Boston, MA 02215',
-        tags: ['cafe', 'coffee', 'outlets']
-    },
-    {
-        _id: '3',
-        name: 'Kilachand Hall Study Lounge',
-        address: '91 Bay State Rd, Boston, MA 02215',
-        tags: ['study lounge', '9th floor', 'open seating']
-    }
-];
 
 export default function ListComponent() {
     const [studySpots, setStudySpots] = useState<StudySpot[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        setStudySpots(mockStudySpots);  // Mock data used here
+        const fetchLocations = async () => {
+            try {
+                console.log("Fetching locations...");
+                setLoading(true);
+
+                const response = await fetch("/api/locations");
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log("Received locations:", data);
+                setStudySpots(data); // ✅ FIXED
+                setError(null);
+            } catch (err) {
+                console.error("Failed to fetch locations:", err);
+                setError(
+                    err instanceof Error ? err.message : "Failed to fetch locations"
+                );
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchLocations();
     }, []);
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         try{
-    //             const response = await fetch('/api/studyspots');
-    //             const data = await response.json();
-    //             setStudySpots(data);
-    //         } catch (error) {
-    //             console.log('Error fetching the study spots' + error);
-    //         }
-    //     };
-    //
-    //     fetchData();
-    // }, []);
+    if (loading) {
+        return (
+            <div style={{ textAlign: "center", padding: "2rem" }}>
+                <h2>BU Study Spots Map</h2>
+                <p>Loading locations...</p>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div style={{ textAlign: "center", padding: "2rem" }}>
+                <h2>BU Study Spots Map</h2>
+                <p style={{ color: "red" }}>Error: {error}</p>
+                <p>
+                    Make sure your backend is running and Google Maps API key is valid.
+                </p>
+            </div>
+        );
+    }
 
     return (
         <StyledTableContainer>
@@ -72,6 +85,7 @@ export default function ListComponent() {
                     <TableRow>
                         <StyledTableCell><strong>Name</strong></StyledTableCell>
                         <StyledTableCell><strong>Address</strong></StyledTableCell>
+                        <StyledTableCell><strong>Floor</strong></StyledTableCell>
                         <StyledTableCell><strong>Tags</strong></StyledTableCell>
                     </TableRow>
                 </TableHead>
@@ -80,6 +94,7 @@ export default function ListComponent() {
                         <TableRow key={spot._id}>
                             <StyledTableCell>{spot.name}</StyledTableCell>
                             <StyledTableCell>{spot.address}</StyledTableCell>
+                            <StyledTableCell>{spot.floor || "N/A"}</StyledTableCell>
                             <StyledTableCell>
                                 {spot.tags.map((tag, index) => (
                                     <StyledChip key={index} label={tag} />
