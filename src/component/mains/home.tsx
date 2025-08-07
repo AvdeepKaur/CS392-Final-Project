@@ -1,13 +1,16 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Switch from "@mui/material/Switch";
-import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
+import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
 import ListComponent from "../ListComponent";
 import Map from "../map";
-
+import LoginComponent from "../Login";
+import Header from "../Header";
 
 export default function Home() {
   const [isListView, setIsListView] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
   const StyledHome = styled.div`
     display: flex;
@@ -53,7 +56,7 @@ export default function Home() {
 
   const FavoriteWrapper = styled.div`
     display: flex;
-    align-items: center;       
+    align-items: center;
     margin: 1% 0;
   `;
 
@@ -61,14 +64,84 @@ export default function Home() {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    align-items: center;   
+    align-items: center;
     width: 100%;
     margin-bottom: 1%;
   `;
 
+  const Button = styled.button`
+    padding: 0.5rem 1rem;
+    background-color: indianred;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    &:hover {
+      background-color: #b22222;
+    }
+  `;
+
+  // check for token and fetch current user
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      fetchCurrentUser(token);
+    }
+  }, []);
+
+  async function fetchCurrentUser(token: string) {
+    try {
+      const res = await fetch("/api/users/me", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (res.ok) {
+        const user = await res.json();
+        setCurrentUser(user);
+      } else {
+        setCurrentUser(null);
+        localStorage.removeItem("token");
+      }
+    } catch (e) {
+      setCurrentUser(null);
+      localStorage.removeItem("token");
+    }
+  }
+
+  // Called after successful login in login component
+  function onLoginSuccess(user: any, token: string) {
+    localStorage.setItem("token", token);
+    setCurrentUser(user);
+    setShowLogin(false);
+  }
+
+  // Logout handler
+  function handleLogout() {
+    localStorage.removeItem("token");
+    setCurrentUser(null);
+  }
+
   return (
     <>
       <title>Home | Terrier StudyMap</title>
+      <Header>
+        {!currentUser ? (
+          <Button onClick={() => setShowLogin(true)}>Login</Button>
+        ) : (
+          <Button onClick={handleLogout}>Logout</Button>
+        )}
+      </Header>
+
+      {showLogin && (
+        <LoginComponent
+          onLoginSuccess={onLoginSuccess}
+          onClose={() => setShowLogin(false)}
+        />
+      )}
+
       <StyledHome>
         <TitleWrapper>
           <ViewLabel>
@@ -84,14 +157,15 @@ export default function Home() {
             />
             <span>List View</span>
           </SwitchContainer>
-
         </TitleWrapper>
         <MapWrapper>
           {isListView ? <ListComponent></ListComponent> : <Map />}
         </MapWrapper>
 
         <FavoriteWrapper>
-          <ViewLabel>Favorite Spots <HeartIcon></HeartIcon></ViewLabel>
+          <ViewLabel>
+            Favorite Spots <HeartIcon></HeartIcon>
+          </ViewLabel>
         </FavoriteWrapper>
       </StyledHome>
     </>

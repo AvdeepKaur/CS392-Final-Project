@@ -1,37 +1,53 @@
 import styled from "styled-components";
 import '/src/global.css';
+import type { ReactNode } from "react";
 
 const StyledHeader = styled.header`
-    margin: 3% 3% 1% 3%;
-    display: flex;
-    justify-content: center;
-    flex-direction: column
+  margin: 3% 3% 1% 3%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
 `;
 
 const AppTitle = styled.h1`
-    font-family: capitolcity, sans-serif;
-    font-size: 40px;
-    color: darkred;
-    text-align: center;
-    margin-bottom: 2%;
+  font-family: capitolcity, sans-serif;
+  font-size: 40px;
+  color: darkred;
+  text-align: center;
+  margin-bottom: 2%;
 `;
 
 const HeaderSubtitle = styled.p`
-    text-align: center;
-    padding: 0 10%;
-    font-family: nunito, sans-serif;
+  text-align: center;
+  padding: 0 10%;
+  font-family: nunito, sans-serif;
 `;
 
-export default function Header(){
+interface HeaderProps {
+  children?: ReactNode;
+}
 
-    return (
-        <StyledHeader>
-            <AppTitle>Terrier StudyMap</AppTitle>
-            <HeaderSubtitle>
-                A campus navigation app designed to help Boston University students
-                easily discover and locate study spots across BU campus.
-            </HeaderSubtitle>
-        </StyledHeader>
-
-    )
+export default function Header({ children }: HeaderProps) {
+  return (
+    <StyledHeader>
+      <AppTitle>Terrier StudyMap</AppTitle>
+      <HeaderSubtitle>
+        A campus navigation app designed to help Boston University students
+        easily discover and locate study spots across BU campus.
+      </HeaderSubtitle>
+      {children && (
+        <div
+          style={{
+            position: "absolute",
+            top: 20,
+            right: 30,
+            zIndex: 2,
+          }}
+        >
+          {children}
+        </div>
+      )}
+    </StyledHeader>
+  );
 }

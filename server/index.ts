@@ -1,5 +1,7 @@
+//avdeep
 import express from "express";
 import locationsRoute from "../src/api/locations";
+import usersRoute from "../src/api/users";
 import cors from "cors";
 import getCollection from "../src/db";
 
@@ -28,13 +30,14 @@ testDB();
 // debugging
 console.log("Setting up routes...");
 app.use("/api/locations", locationsRoute);
+app.use("/api/users", usersRoute);
 
 // a test route to make sure the server is working
 app.get("/", (req, res) => {
   res.json({ message: "Server is running!" });
 });
 
-// a catch-all to see what routes are being requested
+// a catch all to see what routes are being requested
 app.use("*", (req, res) => {
   console.log("Route not found:", req.method, req.originalUrl);
   res.status(404).json({ error: "Route not found", path: req.originalUrl });

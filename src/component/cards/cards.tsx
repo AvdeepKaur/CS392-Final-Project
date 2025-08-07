@@ -6,50 +6,51 @@ import type { Location } from '../../interfaces/Location';
 // yazan
 
 // Sample data for study locations - Added more locations
-const studyLocations: Location[] = [
-    {
-        _id: '1',
-        name: 'GSU',
-        address: '775 Commonwealth Ave, Boston, MA 02215',
+// const studyLocations: Location[] = [
+//     {
+//         _id: '1',
+//         name: 'GSU',
+//         address: '775 Commonwealth Ave, Boston, MA 02215',
 
-        tags: ['Quiet', 'WiFi', '24/7', 'Food']
-    },
-    {
-        _id: '2',
-        name: 'Mugar Library',
-        address: '771 Commonwealth Ave, Boston, MA 02215',
+//         tags: ['Quiet', 'WiFi', '24/7', 'Food']
+//     },
+//     {
+//         _id: '2',
+//         name: 'Mugar Library',
+//         address: '771 Commonwealth Ave, Boston, MA 02215',
 
-        tags: ['Silent', 'Study Rooms', 'WiFi', 'Late Hours']
-    },
-    {
-        _id: '3',
-        name: 'Photonics Center',
-        address: '8 Saint Mary\'s St, Boston, MA 02215',
+//         tags: ['Silent', 'Study Rooms', 'WiFi', 'Late Hours']
+//     },
+//     {
+//         _id: '3',
+//         name: 'Photonics Center',
+//         address: '8 Saint Mary\'s St, Boston, MA 02215',
 
-        tags: ['Modern', 'Collaborative', 'WiFi', 'Cafe']
-    },
-    {
-        _id: '4',
-        name: 'CAS Library',
-        address: '685 Commonwealth Ave, Boston, MA 02215',
+//         tags: ['Modern', 'Collaborative', 'WiFi', 'Cafe']
+//     },
+//     {
+//         _id: '4',
+//         name: 'CAS Library',
+//         address: '685 Commonwealth Ave, Boston, MA 02215',
 
-        tags: ['Quiet', 'Research', 'WiFi', 'Books']
-    },
-    {
-        _id: '5',
-        name: 'Starbucks BU',
-        address: '704 Commonwealth Ave, Boston, MA 02215',
+//         tags: ['Quiet', 'Research', 'WiFi', 'Books']
+//     },
+//     {
+//         _id: '5',
+//         name: 'Starbucks BU',
+//         address: '704 Commonwealth Ave, Boston, MA 02215',
 
-        tags: ['Coffee', 'Casual', 'WiFi', 'Social']
-    },
-    {
-        _id: '6',
-        name: 'Warren Towers Study Lounge ADFBKJDSBFKJSDFBKJSDBF',
-        address: '700 Commonwealth Ave, Boston, MA 02215',
+//         tags: ['Coffee', 'Casual', 'WiFi', 'Social']
+//     },
+//     {
+//         _id: '6',
+//         name: 'Warren Towers Study Lounge ADFBKJDSBFKJSDFBKJSDBF',
+//         address: '700 Commonwealth Ave, Boston, MA 02215',
 
-        tags: ['Dorm', 'Group Study', 'WiFi', 'Late Night']
-    }
-];
+//         tags: ['Dorm', 'Group Study', 'WiFi', 'Late Night']
+//     }
+// ];
+
 
 // Styled Components
 
@@ -216,90 +217,110 @@ const SlideContainer = styled.div`
 
 // main Component
 const StudyCards: React.FC<{ onCardClick?: (id: string) => void }> = ({
-                                                                          onCardClick,
-                                                                      }) => {
-    /* highlighted card ID */
-    const [activeId, setActiveId] = useState<string | null>(null);
-    const settings = {
-        dots: true,
-        infinite: true,
-        speed: 500,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        arrows: true,
-        autoplay: false,
-    };
+  onCardClick,
+}) => {
+  const [studyLocations, setFavoriteLocations] = useState<Location[]>([]);
 
-    // Determine cards per slide based on window width
-    const getCardsPerSlide = () => {
-        if (typeof window !== 'undefined') {
-            if (window.innerWidth < 768) return 1;
-            if (window.innerWidth < 1024) return 2;
-            return 3;
-        }
-        return 3;
-    };
-
-    const [cardsPerSlide, setCardsPerSlide] = useState(getCardsPerSlide());
-
-    useEffect(() => {
-        const handleResize = () => {
-            setCardsPerSlide(getCardsPerSlide());
-        };
-
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
-
-    // Group locations into sets based on cards per slide
-    const groupedLocations = [];
-    for (let i = 0; i < studyLocations.length; i += cardsPerSlide) {
-        groupedLocations.push(studyLocations.slice(i, i + cardsPerSlide));
+  useEffect(() => {
+    async function fetchFavorites() {
+      const token = localStorage.getItem("token");
+      const res = await fetch("/api/users/favorites", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setFavoriteLocations(data);
+      } else {
+        setFavoriteLocations([]);
+      }
     }
+    fetchFavorites();
+  }, []);
 
-    return (
-        <CardsContainer>
-            <Carousel {...settings}>
-                {groupedLocations.map((locationGroup, groupIndex) => (
-                    <div key={groupIndex}>
-                        <SlideContainer>
-                            {locationGroup.map((location) => (
-                                <Card
-                                    key={location._id}
-                                    $selected={location._id === activeId}
-                                    onClick={() => {
-                                        setActiveId(location._id); // for highlight
-                                        onCardClick?.(location._id); // SEND OUT ID FOR BACK-END !!
-                                    }}
-                                >
-                                    {/* Image placeholder */}
-                                    <ImagePlaceholder />
+  /* highlighted card ID */
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: true,
+    autoplay: false,
+  };
 
-                                    {/* Text content */}
-                                    <CardContent>
-                                        {/* Location name */}
-                                        <NameContainer>
-                                            <LocationName>{location.name}</LocationName>
-                                        </NameContainer>
+  // Determine cards per slide based on window width
+  const getCardsPerSlide = () => {
+    if (typeof window !== "undefined") {
+      if (window.innerWidth < 768) return 1;
+      if (window.innerWidth < 1024) return 2;
+      return 3;
+    }
+    return 3;
+  };
 
-                                        {/* Address */}
-                                        <Address>{location.address}</Address>
+  const [cardsPerSlide, setCardsPerSlide] = useState(getCardsPerSlide());
 
-                                        {/* Tags */}
-                                        <TagsContainer>
-                                            {location.tags.map((tag, index) => (
-                                                <Tag key={index}>{tag}</Tag>
-                                            ))}
-                                        </TagsContainer>
-                                    </CardContent>
-                                </Card>
-                            ))}
-                        </SlideContainer>
-                    </div>
-                ))}
-            </Carousel>
-        </CardsContainer>
-    );
+  useEffect(() => {
+    const handleResize = () => {
+      setCardsPerSlide(getCardsPerSlide());
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Group locations into sets based on cards per slide
+  const groupedLocations = [];
+  for (let i = 0; i < studyLocations.length; i += cardsPerSlide) {
+    groupedLocations.push(studyLocations.slice(i, i + cardsPerSlide));
+  }
+
+  return (
+    <CardsContainer>
+      <Carousel {...settings}>
+        {groupedLocations.map((locationGroup, groupIndex) => (
+          <div key={groupIndex}>
+            <SlideContainer>
+              {locationGroup.map((location) => (
+                <Card
+                  key={location._id}
+                  $selected={location._id === activeId}
+                  onClick={() => {
+                    setActiveId(location._id); // for highlight
+                    onCardClick?.(location._id); // SEND OUT ID FOR BACK-END !!
+                  }}
+                >
+                  {/* Image placeholder */}
+                  <ImagePlaceholder />
+
+                  {/* Text content */}
+                  <CardContent>
+                    {/* Location name */}
+                    <NameContainer>
+                      <LocationName>{location.name}</LocationName>
+                    </NameContainer>
+
+                    {/* Address */}
+                    <Address>{location.address}</Address>
+
+                    {/* Tags */}
+                    <TagsContainer>
+                      {location.tags.map((tag, index) => (
+                        <Tag key={index}>{tag}</Tag>
+                      ))}
+                    </TagsContainer>
+                  </CardContent>
+                </Card>
+              ))}
+            </SlideContainer>
+          </div>
+        ))}
+      </Carousel>
+    </CardsContainer>
+  );
 };
 
 export default StudyCards;
