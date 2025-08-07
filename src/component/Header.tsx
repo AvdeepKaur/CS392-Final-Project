@@ -4,6 +4,7 @@ import styled from "styled-components";
 import '/src/global.css';
 import type { ReactNode } from "react";
 
+//styling for the header
 const StyledHeader = styled.header`
   margin: 3% 3% 1% 3%;
   display: flex;

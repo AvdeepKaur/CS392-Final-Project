@@ -17,7 +17,7 @@ const StyledChip = styled(Chip)`
     margin-right: 2%;
 `;
 
-
+//establish the types expected to be fetched
 interface StudySpot {
     _id: string;
     name: string;
@@ -31,6 +31,7 @@ export default function ListComponent() {
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
 
+    //fetch the locations and their data
     useEffect(() => {
         const fetchLocations = async () => {
             try {
@@ -44,7 +45,7 @@ export default function ListComponent() {
 
                 const data = await response.json();
                 console.log("Received locations:", data);
-                setStudySpots(data); // ✅ FIXED
+                setStudySpots(data);
                 setError(null);
             } catch (err) {
                 console.error("Failed to fetch locations:", err);
@@ -59,6 +60,7 @@ export default function ListComponent() {
         fetchLocations();
     }, []);
 
+    //loading
     if (loading) {
         return (
             <div style={{ textAlign: "center", padding: "2rem" }}>
@@ -68,6 +70,7 @@ export default function ListComponent() {
         );
     }
 
+    //error handling
     if (error) {
         return (
             <div style={{ textAlign: "center", padding: "2rem" }}>
@@ -80,6 +83,7 @@ export default function ListComponent() {
         );
     }
 
+    //created a frontend table to display the location data for every location on the map
     return (
         <StyledTableContainer>
             <Table>

@@ -2,6 +2,7 @@
 
 import styled from "styled-components";
 
+//styling for the footer
 const StyledFooter = styled.footer`
     margin: 3%;
     display: flex;
