@@ -1,3 +1,5 @@
+//ruby
+
 import styled from "styled-components";
 import Footer from "./component/Footer";
 import StudyCards from "./component/cards/cards.tsx";
