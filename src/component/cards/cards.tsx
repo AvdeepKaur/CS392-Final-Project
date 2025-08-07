@@ -220,10 +220,18 @@ const StudyCards: React.FC<{ onCardClick?: (id: string) => void }> = ({
   onCardClick,
 }) => {
   const [studyLocations, setFavoriteLocations] = useState<Location[]>([]);
+  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+
+    if (!token) {
+      setFavoriteLocations([]);
+      return;
+    }
+
     async function fetchFavorites() {
-      const token = localStorage.getItem("token");
       const res = await fetch("/api/users/favorites", {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -278,6 +286,37 @@ const StudyCards: React.FC<{ onCardClick?: (id: string) => void }> = ({
     groupedLocations.push(studyLocations.slice(i, i + cardsPerSlide));
   }
 
+  // if a user isn't logged in:
+  if (!isLoggedIn) {
+    return (
+      <CardsContainer>
+        <CardContent>
+          <Card>
+            <LocationName>
+              Log in or make an account to add favorites
+            </LocationName>
+          </Card>
+        </CardContent>
+      </CardsContainer>
+    );
+  }
+
+  //if a user is logged in but has no favorites:
+  if (isLoggedIn && studyLocations.length === 0) {
+    return (
+      <CardsContainer>
+        <CardContent>
+          <Card>
+            <LocationName>
+              Favorite some locations to quickly access them here
+            </LocationName>
+          </Card>
+        </CardContent>
+      </CardsContainer>
+    );
+  }
+
+  // If there are favorite locations, render the carousel
   return (
     <CardsContainer>
       <Carousel {...settings}>
