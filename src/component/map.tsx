@@ -14,7 +14,7 @@ interface Location {
 
 declare global {
   interface Window {
-    google: any;
+    google: typeof google;
     initMap?: () => void;
   }
 }
@@ -76,7 +76,7 @@ const Map = () => {
   const [error, setError] = useState<string | null>(null);
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [userFavorites, setUserFavorites] = useState<Set<string>>(new Set());
-  const currentInfoWindowRef = useRef<any>(null);
+  const currentInfoWindowRef = useRef<google.maps.InfoWindow | null>(null);
 
   // Mock current user for testing
   // useEffect(() => {
@@ -328,11 +328,11 @@ const Map = () => {
     const geocoder = new window.google.maps.Geocoder();
     let markersCreated = 0;
 
-    locations.forEach((location, index) => {
+    locations.forEach((location) => {
       geocoder.geocode(
         { address: location.address },
-        (results: any, status: any) => {
-          if (status === "OK" && results[0]) {
+          (results: google.maps.GeocoderResult[] | null, status: google.maps.GeocoderStatus) => {
+            if (status === "OK" && results && results[0]) {
             const marker = new window.google.maps.Marker({
               map,
               position: results[0].geometry.location,
@@ -349,7 +349,6 @@ const Map = () => {
             const infoWindow = new window.google.maps.InfoWindow({
               content: createInfoWindowContent(location, isFavorited),
               maxWidth: 300,
-              closeBoxURL: "",
             });
 
             marker.addListener("click", () => {
