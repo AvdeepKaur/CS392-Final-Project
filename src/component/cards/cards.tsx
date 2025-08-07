@@ -1,56 +1,40 @@
+//yazan
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Carousel } from 'antd';
 import 'antd/dist/reset.css';
 import type { Location } from '../../interfaces/Location';
-// yazan
 
-// Sample data for study locations - Added more locations
-// const studyLocations: Location[] = [
-//     {
-//         _id: '1',
-//         name: 'GSU',
-//         address: '775 Commonwealth Ave, Boston, MA 02215',
-
-//         tags: ['Quiet', 'WiFi', '24/7', 'Food']
-//     },
-//     {
-//         _id: '2',
-//         name: 'Mugar Library',
-//         address: '771 Commonwealth Ave, Boston, MA 02215',
-
-//         tags: ['Silent', 'Study Rooms', 'WiFi', 'Late Hours']
-//     },
-//     {
-//         _id: '3',
-//         name: 'Photonics Center',
-//         address: '8 Saint Mary\'s St, Boston, MA 02215',
-
-//         tags: ['Modern', 'Collaborative', 'WiFi', 'Cafe']
-//     },
-//     {
-//         _id: '4',
-//         name: 'CAS Library',
-//         address: '685 Commonwealth Ave, Boston, MA 02215',
-
-//         tags: ['Quiet', 'Research', 'WiFi', 'Books']
-//     },
-//     {
-//         _id: '5',
-//         name: 'Starbucks BU',
-//         address: '704 Commonwealth Ave, Boston, MA 02215',
-
-//         tags: ['Coffee', 'Casual', 'WiFi', 'Social']
-//     },
-//     {
-//         _id: '6',
-//         name: 'Warren Towers Study Lounge ADFBKJDSBFKJSDFBKJSDBF',
-//         address: '700 Commonwealth Ave, Boston, MA 02215',
-
-//         tags: ['Dorm', 'Group Study', 'WiFi', 'Late Night']
-//     }
-// ];
-
+/**
+ * component outline:
+ *
+ *  This component displays favorite study locations in a carousel format.
+ *  It handles three states: not logged in, logged in with no favorites, and logged in with favorites.
+ *
+ * 	CardsContainer (dark red wrapper)
+ *
+ * 		[CASE 1: Not logged in]
+ * 		CardContent
+ * 			Card
+ * 				LocationName (login prompt)
+ *
+ * 		[CASE 2: No favorites]
+ * 		CardContent
+ * 			Card
+ * 				LocationName (add favorites message)
+ *
+ * 		[CASE 3: Has favorites]
+ * 		Carousel
+ * 			SlideContainer (per slide)
+ * 				Card(s)
+ * 					ImagePlaceholder (gray box)
+ * 					CardContent
+ * 						NameContainer
+ * 							LocationName (title)
+ * 						Address (location)
+ * 						TagsContainer
+ * 							Tag(s) (red pills)
+ */
 
 // Styled Components
 
@@ -74,7 +58,6 @@ const CardsContainer = styled.div`
     
     
     .ant-carousel {
-        /* override slick’s hidden overflow */
 
         .slick-list,
         .slick-track {
@@ -84,8 +67,7 @@ const CardsContainer = styled.div`
         .slick-slide {
             overflow: visible !important;
         }
-
-        /* keep your existing carousel height/style overrides */
+      
 
         .ant-carousel-content {
             height: 200px;
@@ -291,7 +273,7 @@ const StudyCards: React.FC<{ onCardClick?: (id: string) => void }> = ({
     return (
       <CardsContainer>
         <CardContent>
-          <Card>
+          <Card $selected={false}>
             <LocationName>
               Log in or make an account to add favorites
             </LocationName>
@@ -306,7 +288,7 @@ const StudyCards: React.FC<{ onCardClick?: (id: string) => void }> = ({
     return (
       <CardsContainer>
         <CardContent>
-          <Card>
+          <Card $selected={false}>
             <LocationName>
               Favorite some locations to quickly access them here
             </LocationName>
