@@ -1,3 +1,5 @@
+//ruby and avdeep
+
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import Switch from "@mui/material/Switch";
@@ -12,6 +14,7 @@ export default function Home() {
   const [showLogin, setShowLogin] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
 
+  //the styling for the homepage component using imports and icons from MUI
   const StyledHome = styled.div`
     display: flex;
     flex-direction: column;
@@ -144,10 +147,13 @@ export default function Home() {
 
       <StyledHome>
         <TitleWrapper>
+          {/*if else condition used to determine whether the user is viewing the */}
+          {/*map or the list of study spots.*/}
           <ViewLabel>
             {isListView ? "List of Study Spots" : "Interactive Map"}
           </ViewLabel>
 
+          {/*MUI component that allows for a toggle between map and list view.*/}
           <SwitchContainer>
             <span>Map View</span>
             <Switch
@@ -158,6 +164,8 @@ export default function Home() {
             <span>List View</span>
           </SwitchContainer>
         </TitleWrapper>
+        {/*rechecks the state of isListView to determine whether we are on*/}
+        {/*map view or list component view */}
         <MapWrapper>
           {isListView ? <ListComponent></ListComponent> : <Map />}
         </MapWrapper>

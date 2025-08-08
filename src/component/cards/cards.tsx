@@ -138,14 +138,14 @@ const Card = styled.div<CardProps>`
     }
 `;
 
-const ImagePlaceholder = styled.div`
-    width: clamp(80px, 15vw, 120px);
-    height: clamp(80px, 15vw, 120px); 
-    
-    background-color: #c4c4c4;
-    border-radius: 8px;
-    flex-shrink: 0;
-`;
+// const ImagePlaceholder = styled.div`
+//     width: clamp(80px, 15vw, 120px);
+//     height: clamp(80px, 15vw, 120px);
+//
+//     background-color: #c4c4c4;
+//     border-radius: 8px;
+//     flex-shrink: 0;
+// `;
 
 const NameContainer = styled.div`
     display: flex;
@@ -314,8 +314,8 @@ const StudyCards: React.FC<{ onCardClick?: (id: string) => void }> = ({
                     onCardClick?.(location._id); // SEND OUT ID FOR BACK-END !!
                   }}
                 >
-                  {/* Image placeholder */}
-                  <ImagePlaceholder />
+                  {/*/!* Image placeholder *!/*/}
+                  {/*<ImagePlaceholder />*/}
 
                   {/* Text content */}
                   <CardContent>

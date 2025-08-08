@@ -4,7 +4,7 @@ import styled from "styled-components";
 import '/src/global.css';
 import type { ReactNode } from "react";
 
-//styling for the header
+//styling for the header using styled-components
 const StyledHeader = styled.header`
   margin: 3% 3% 1% 3%;
   display: flex;
@@ -27,6 +27,7 @@ const HeaderSubtitle = styled.p`
   font-family: nunito, sans-serif;
 `;
 
+//defining props
 interface HeaderProps {
   children?: ReactNode;
 }
@@ -40,7 +41,8 @@ export default function Header({ children }: HeaderProps) {
         easily discover and locate study spots across BU campus.
       </HeaderSubtitle>
       {children && (
-        <div
+        //this is for the login button/component
+          <div
           style={{
             position: "absolute",
             top: 20,

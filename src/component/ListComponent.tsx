@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import {useEffect, useState} from "react";
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Chip} from '@mui/material';
 
+//styling for the list component with imports from MUI
 const StyledTableContainer = styled(TableContainer)`
     width: 80%;
     margin: 2% auto;
@@ -60,7 +61,7 @@ export default function ListComponent() {
         fetchLocations();
     }, []);
 
-    //loading
+    //loading locations
     if (loading) {
         return (
             <div style={{ textAlign: "center", padding: "2rem" }}>
@@ -96,6 +97,8 @@ export default function ListComponent() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
+                    {/*now we map the data we fetched and connect them to the*/}
+                    {/*rows within the table */}
                     {studySpots.map((spot) => (
                         <TableRow key={spot._id}>
                             <StyledTableCell>{spot.name}</StyledTableCell>
